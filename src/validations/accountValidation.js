@@ -5,8 +5,8 @@ import ApiError from '~/utils/ApiError'
 import { OBJECT_ID_RULE, OBJECT_ID_RULE_MESSAGE } from '~/utils/validators'
 
 const createNew = async (req, res, next) => {
-    console.log(req.body);
   const correctCondition = Joi.object({
+    name: Joi.string().required().trim().strict(),
     username: Joi.string().required().trim().strict(),
     password: Joi.string().min(6).required().trim().strict(),
   })

@@ -16,11 +16,7 @@ const createNew = async (reqBody) => {
     // Gọi tới tầng Model để xử lý lưu bản ghi newaccount vào trong Database
     const createdaccount = await userModel.createNew(newaccount)
 
-    // Lấy bản ghi account sau khi gọi (tùy mục đích dự án mà có cần bước này hay không)
-    const getNewaccount = await userModel.findOneById(createdaccount.insertedId)
-
-  
-    return getNewaccount
+    return createdaccount
   } catch (error) { throw error }
 }
 const login = async (reqBody) => {

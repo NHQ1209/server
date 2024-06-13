@@ -6,7 +6,7 @@ import { accountController } from '~/controllers/accountController'
 
 const Router = express.Router()
 
-Router.route('/')
+Router.route('/register')
   .get((req, res) => {
     res.status(StatusCodes.OK).json({ message: 'GET: API get list accounts' })
   })
