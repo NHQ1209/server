@@ -7,6 +7,7 @@ import { CONNECT_DB, CLOSE_DB } from '~/config/mongodb'
 import { env } from '~/config/environment'
 import { APIs_V1 } from '~/routes/v1'
 import { errorHandlingMiddleware } from '~/middlewares/errorHandlingMiddleware'
+import handleSendMail from './cron-job/handleSendMail'
 
 const START_SERVER = () => {
   const app = express()
@@ -22,6 +23,8 @@ const START_SERVER = () => {
 
   // Middleware xử lý lỗi tập trung
   app.use(errorHandlingMiddleware)
+
+  handleSendMail.start()
 
   // Môi trường Production (cụ thể hiện tại là đang support Render.com)
   if (env.BUILD_MODE === 'production') {

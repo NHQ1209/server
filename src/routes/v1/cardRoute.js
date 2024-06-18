@@ -8,4 +8,7 @@ const Router = express.Router()
 Router.route('/')
   .post(cardValidation.createNew, cardController.createNew)
 
+Router.route('/updateCard')
+  .post(cardController.updateCard)
+
 export const cardRoute = Router

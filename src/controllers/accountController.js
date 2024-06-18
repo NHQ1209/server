@@ -17,6 +17,7 @@ const createNew = async (req, res, next) => {
   try {
     const hashedPassword = await hashPassword(req.body.password);
     req.body.password = hashedPassword;
+    console.log(req.body)
     const createdAccount = await accountService.createNew(req.body);
 
     // // Có kết quả thì trả về phía Client

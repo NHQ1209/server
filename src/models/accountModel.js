@@ -10,6 +10,7 @@ const ACCOUNT_COLLECTION_SCHEMA = Joi.object({
   name: Joi.string().required().trim().strict(),
   username: Joi.string().required().trim().strict(),
   password: Joi.string().min(6).required().trim().strict(),
+  email: Joi.string().required().trim().strict(),
 
   boardIds: Joi.array()
     .items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))

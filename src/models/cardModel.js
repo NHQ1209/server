@@ -12,14 +12,20 @@ const CARD_COLLECTION_SCHEMA = Joi.object({
   columnId: Joi.string().required().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
 
   title: Joi.string().required().min(3).max(50).trim().strict(),
-  description: Joi.string().optional(),
+  description: Joi.string().default(null),
+  startDate: Joi.date().timestamp('javascript').default(null),
+  endDate: Joi.date().timestamp('javascript').default(null),
+  status: Joi.number().default(1),
+  isSend: Joi.boolean().default(false),
+  hourNumber: Joi.number().default(null),
+  hasSend: Joi.boolean().default(false),
 
   createdAt: Joi.date().timestamp('javascript').default(Date.now),
   updatedAt: Joi.date().timestamp('javascript').default(null),
   _destroy: Joi.boolean().default(false)
 })
 
-const INVALID_UPDATE_FIELDS = ['_id', 'boardId', 'createdAt']
+const INVALID_UPDATE_FIELDS = ['_id', 'boardId', 'columnId', 'createdAt']
 
 const validateBeforeCreate = async (data) => {
   return await CARD_COLLECTION_SCHEMA.validateAsync(data, { abortEarly: false })
@@ -27,6 +33,7 @@ const validateBeforeCreate = async (data) => {
 
 const createNew = async (data) => {
   try {
+    console.log('data: ',data)
     const validData = await validateBeforeCreate(data)
     // Biến đổi một số dữ liệu liên quan tới ObjectId chuẩn chỉnh
     const newCardToAdd = {
@@ -57,14 +64,24 @@ const update = async (cardId, updateData) => {
     })
 
     // Đối với những dữ liệu liên quan ObjectId, biến đổi ở đây
-    if (updateData.columnId) updateData.columnId = new ObjectId(updateData.columnId)
-
+    // if (updateData.columnId) updateData.columnId = new ObjectId(updateData.columnId)
+    if(updateData.status == 3)
+      updateData.columnId = new ObjectId('666f07827b8460b0d3a2c451');
+    else if(updateData.status == 2)
+      updateData.columnId = new ObjectId('666f077f7b8460b0d3a2c450');
+    else
+      updateData.columnId = new ObjectId('666f8e1fe653b6a775c88d3d');
     const result = await GET_DB().collection(CARD_COLLECTION_NAME).findOneAndUpdate(
       { _id: new ObjectId(cardId) },
       { $set: updateData },
       { returnDocument: 'after' } // sẽ trả về kết quả mới sau khi cập nhật
     )
-    return result
+
+    return {
+      result,
+      message: 'Lưu thành công',
+      messageCode: 200,
+    };
   } catch (error) { throw new Error(error) }
 }
 
